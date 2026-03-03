@@ -99,19 +99,52 @@ document.addEventListener('DOMContentLoaded', () => {
         aiFixStatus.textContent = '正在请求大模型，请稍候...';
 
         try {
-            const response = await fetch('/api/proxy', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    targetUrl: config.apiUrl,
+            let response;
+            try {
+                // 优先尝试通过本地代理请求
+                response = await fetch('/api/proxy', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        targetUrl: config.apiUrl,
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${config.apiKey}`
+                        },
+                        body: {
+                            model: config.modelName,
+                            messages: [
+                                {
+                                    role: 'system',
+                                    content: '你是一个 JSON 修复专家。请修复用户提供的 JSON 字符串。只返回修复后的 JSON 内容，不要包含任何 Markdown 标记（如 ```json），不要包含任何解释性文字。如果无法修复，请返回原始字符串。'
+                                },
+                                {
+                                    role: 'user',
+                                    content: wrongJson
+                                }
+                            ],
+                            stream: false
+                        }
+                    })
+                });
+
+                // 如果代理接口不存在(404)或出错，抛出异常以触发降级重试
+                if (response.status === 404) {
+                    throw new Error('Proxy not found');
+                }
+            } catch (proxyError) {
+                console.warn('代理请求失败，尝试直接请求:', proxyError);
+                // 降级：直接请求大模型接口 (需接口支持 CORS)
+                response = await fetch(config.apiUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${config.apiKey}`
                     },
-                    body: {
+                    body: JSON.stringify({
                         model: config.modelName,
                         messages: [
                             {
@@ -124,9 +157,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         ],
                         stream: false
-                    }
-                })
-            });
+                    })
+                });
+            }
 
             if (!response.ok) {
                 let errorMsg = `请求失败: ${response.status}`;
