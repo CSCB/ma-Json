@@ -1,0 +1,366 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative; /* For settings button positioning */
+}
+
+h1 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.settings-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: transparent;
+    color: #555;
+    border: 1px solid #ddd;
+}
+
+.settings-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.toolbar {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+#validateBtn {
+    background-color: #27ae60;
+    color: white;
+}
+
+#validateBtn:hover {
+    background-color: #219150;
+}
+
+#compressBtn {
+    background-color: #3498db;
+    color: white;
+}
+
+#compressBtn:hover {
+    background-color: #2980b9;
+}
+
+#clearBtn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+#clearBtn:hover {
+    background-color: #c0392b;
+}
+
+#copyBtn {
+    background-color: #f39c12;
+    color: white;
+}
+
+#copyBtn:hover {
+    background-color: #d35400;
+}
+
+#statusMessage {
+    margin-left: auto;
+    font-weight: bold;
+}
+
+.status-valid {
+    color: #27ae60;
+}
+
+.status-invalid {
+    color: #e74c3c;
+}
+
+.editor-container {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    min-height: 0; /* Important for flex container scrolling */
+}
+
+.input-area, .output-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    padding: 15px;
+}
+
+h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+textarea {
+    flex: 1;
+    width: 100%;
+    resize: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #3498db;
+}
+
+.output-content {
+    flex: 1;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0; /* Changed for line numbers */
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    box-sizing: border-box;
+    overflow: auto;
+    background-color: #fafafa;
+    /* white-space: pre-wrap; -> handled by children */
+    word-wrap: break-word;
+}
+
+/* Line Number Styles */
+.code-line {
+    display: flex;
+    width: 100%;
+}
+
+.code-line:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.line-number {
+    display: block;
+    width: 45px;
+    min-width: 45px;
+    text-align: right;
+    padding: 2px 10px 2px 5px;
+    color: #aaa;
+    background-color: #f0f0f0;
+    border-right: 1px solid #ddd;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.code-content {
+    flex: 1;
+    padding: 2px 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.simple-output {
+    padding: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Syntax Highlighting */
+.string { color: #2980b9; }
+.number { color: #e67e22; }
+.boolean { color: #8e44ad; }
+.null { color: #95a5a6; }
+.key { color: #c0392b; }
+
+/* Auto Fix Styles */
+.error-message {
+    color: #e74c3c;
+    font-weight: bold;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+.fix-suggestion {
+    margin: 15px 10px;
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+.fix-suggestion p {
+    margin: 0 0 10px 0;
+    color: #166534;
+    font-weight: bold;
+}
+
+.fix-btn {
+    background-color: #22c55e;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.fix-btn:hover {
+    background-color: #16a34a;
+}
+
+.fix-btn:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.preview-fix {
+    margin: 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 12px;
+    max-height: 200px;
+    overflow: auto;
+    color: #333;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 0;
+    border-radius: 8px;
+    width: 500px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s;
+}
+
+@keyframes slideIn {
+    from {transform: translateY(-50px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+}
+
+.modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #888;
+    font-size: 12px;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    text-align: right;
+}
+
+#saveSettingsBtn {
+    background-color: #3498db;
+    color: white;
+}
+
+#saveSettingsBtn:hover {
+    background-color: #2980b9;
+}

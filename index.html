@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON 验证与格式化工具</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JSON 验证与格式化工具</h1>
+            <button id="settingsBtn" class="settings-btn" title="设置大模型">⚙️ 设置</button>
+        </header>
+        <main>
+            <div class="toolbar">
+                <button id="validateBtn">验证 / 格式化</button>
+                <button id="compressBtn">压缩</button>
+                <button id="clearBtn">清空</button>
+                <button id="copyBtn">复制结果</button>
+                <span id="statusMessage"></span>
+            </div>
+            <div class="editor-container">
+                <div class="input-area">
+                    <h3>输入 JSON</h3>
+                    <textarea id="jsonInput" placeholder="在此粘贴您的 JSON..."></textarea>
+                </div>
+                <div class="output-area">
+                    <h3>结果 / 错误信息</h3>
+                    <div id="jsonOutput" class="output-content" contenteditable="false"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 设置模态框 -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>大模型配置</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="apiUrl">接口地址 (URL):</label>
+                    <input type="text" id="apiUrl" value="https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions" placeholder="https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions">
+                    <small>通常为 OpenAI 兼容接口地址，例如 /v1/chat/completions 或 /v2/chat/completions</small>
+                </div>
+                <div class="form-group">
+                    <label for="apiKey">API Key:</label>
+                    <input type="password" id="apiKey" value="670a5a5adb08c09e069e8fd54ef2a466:ZWM1MjViZWE3Njk2MzFjNWI2MDA4OThi" placeholder="输入您的 API Key">
+                    <small>Bearer Token 格式。如果是 AppID:APISecret 格式，请直接填入。</small>
+                </div>
+                <div class="form-group">
+                    <label for="modelName">模型名称 (Model):</label>
+                    <input type="text" id="modelName" value="xop3qwen1b7" placeholder="例如: xop3qwen1b7, jsonchatxunfei">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveSettingsBtn">保存配置</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
